@@ -1,0 +1,75 @@
+<title>Quizzle</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="{{url_for('static', filename= 'styles.css')}}">
+
+
+<head>
+<script type="text/javascript">
+var x = 0
+var test
+var test_status
+var questions
+var choice 
+var UserPick
+var Answer1
+var Answer2
+var Answer3
+var correct = 0;
+
+
+
+var Test = [
+  ["What is 36 + 42", "64", "78", "76", "B"],
+  ["What is 7 x 4?", "21", "27", "28", "C"],
+  ["What is 16 / 4?", "4", "6", "3", "A"],
+  ["What is 8 x 12?", "88", "112", "96", "C"]
+  ];
+
+
+function Create_Question(){
+  test = document.getElementById("test");
+  if(x >= Test.length){
+    test.innerHTML = "<h2>You got "+correct+" of "+Test.length+" questions correct</h2>";
+    document.getElementById("test_status").innerHTML = "Test completed";
+    x = 0;
+    correct = 0;
+    return false;
+  }
+  document.getElementById("test_status").innerHTML = "Question "+(x+1)+" of "+Test.length;
+  questions = Test[x][0];
+  Answer1 = Test[x][1];
+  Answer2 = Test[x][2];
+  Answer3 = Test[x][3];
+  test.innerHTML = "<h3>"+questions+"</h3>";
+  test.innerHTML += "<input type='radio' name='UserPick' value='A'> "+Answer1+"<br>";
+  test.innerHTML += "<input type='radio' name='UserPick' value='B'> "+Answer2+"<br>";
+  test.innerHTML += "<input type='radio' name='UserPick' value='C'> "+Answer3+"<br><br>";
+  test.innerHTML += "<button onclick='checkAnswer()'>Submit Answer</button>";
+}
+function checkAnswer(){
+  UserPick = document.getElementsByName("UserPick");
+  for(var a=0; a<UserPick.length; a++){
+    if(UserPick[a].checked){
+      choice = UserPick[a].value;
+    }
+  }
+  if(choice == Test[x][4]){
+    correct=correct+1;
+  }
+  x++;
+  Create_Question();
+}
+window.addEventListener("load", Create_Question, false);
+</script>
+</head>
+<body class="container">
+  <div class="login">
+    <h2 id="test_status"></h2>
+    <div>
+    <div id="test"></div>
+      <a href="{{url_for('login')}}"class="btn btn-default" type="submit">Logout</a>
+    </div>
+  </div>
+</body>
